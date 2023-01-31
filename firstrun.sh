@@ -12,10 +12,10 @@ sudo adduser dss i2c
 echo "export PYTHONPATH=~/grove-base" | sudo tee -a /home/dss/.bashrc
 
 
-# show network status on lcd screen
-/usr/bin/python3 /home/pi/grove-startup-scripts/showIP.py &
 
 sudo /sbin/iw wlan0 set power_save off
+# show network status on lcd screen
+/usr/bin/python3 /home/pi/grove-startup-scripts/showIP.py &
 
 NET=0
 
