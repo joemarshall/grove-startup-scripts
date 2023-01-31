@@ -22,10 +22,10 @@ if [ $NET = 0 ]; then exit 1; fi
 
 # add dss user
 sudo useradd dss -m -G i2c,audio,video,gpio,spi
-sudo chpasswd dss:dss
+sudo chpasswd <<< "dss:dss"
 sudo mkdir /home/dss
 sudo adduser dss i2c
-echo "export PYTHONPATH=~/grove-base" >> /home/dss/.bashrc
+sudo echo "export PYTHONPATH=~/grove-base" >> /home/dss/.bashrc
 
 sudo apt-get update -y
 sudo apt-get install -y /home/pi/grove-startup-scripts/avrdude_6.2-2_armhf.deb
