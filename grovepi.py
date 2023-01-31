@@ -47,6 +47,7 @@ def resetBus(retries):
         bus = smbus.SMBus(0) 
 
 def closeBus():
+    global bus
     if bus!=None:
         bus.close()
         bus=None
