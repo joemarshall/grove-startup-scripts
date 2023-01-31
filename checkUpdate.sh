@@ -2,7 +2,7 @@
 cd /home/pi/grove-startup-scripts
 
 sudo mkdir /home/dss/.ssh
-sudo cp /home/pi/g54mrt-useful-code/startup-scripts/authorized_keys /home/g54mrt/.ssh/
+sudo cp /home/pi/grove-startup-scripts/authorized_keys /home/dss/.ssh/
 sudo chown dss.dss /home/dss/.ssh 
 sudo chmod 644 /home/dss/.ssh/authorized_keys
 
@@ -12,11 +12,15 @@ do
   echo "waiting for github"
   sleep 1
 done
+# pull changes from git in dss user if needed
+pushd /home/dss
+sudo -u dss bash ./getlatest.sh
+popd
 
 set -o pipefail
 #pull any changes from git
 if git pull | grep -q "up-to-date"; then
-echo "no changes"
+  echo "no changes"
 else
     if [ $? -ne 0 ]
     then
