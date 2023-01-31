@@ -1,31 +1,34 @@
 #! /bin/bash
 
+
 # enable i2c
 sudo raspi-config nonint do_i2c 0
-
-# show network status on lcd screen
-/usr/bin/python3 /home/pi/grove-startup-scripts/showIP.py &
-
-
-sudo /sbin/iw wlan0 set power_save off
-
-NET=0
-
-for i in {1..10}
-do
-    NET=1
-    wget -w3 -O/dev/null https://www.github.com  && break
-    NET=0
-    sleep 1
-done
-if [ $NET = 0 ]; then exit 1; fi
 
 # add dss user
 sudo useradd dss -m -G i2c,audio,video,gpio,spi
 sudo chpasswd <<< "dss:dss"
 sudo mkdir /home/dss
 sudo adduser dss i2c
-sudo echo "export PYTHONPATH=~/grove-base" >> /home/dss/.bashrc
+echo "export PYTHONPATH=~/grove-base" | sudo tee -a /home/dss/.bashrc
+
+
+# show network status on lcd screen
+/usr/bin/python3 /home/pi/grove-startup-scripts/showIP.py &
+
+sudo /sbin/iw wlan0 set power_save off
+
+NET=0
+
+# wait for network
+while true
+do
+    NET=1
+    wget -w3 -O/dev/null https://www.github.com  && break
+    sudo iwlist wlan0 scan > /dev/null
+    NET=0
+    sleep 1
+done
+
 
 sudo apt-get update -y
 sudo apt-get install -y /home/pi/grove-startup-scripts/avrdude_6.2-2_armhf.deb

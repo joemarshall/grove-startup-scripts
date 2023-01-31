@@ -26,10 +26,13 @@ try:
 except IOError:
     imgDate=""
 
-gitVer=subprocess.check_output("git --git-dir=/home/pi/g54mrt-useful-code/.git log -1 --format=\"%at\"  | xargs -I{} date -d @{} +%d%m%y",shell=True) 
-gitVer=gitVer.decode()    
-print(gitVer)
-grovelcd.setText("MRT%s %s\nIMG FW%s (%s)"%(imgDate[0:4]+imgDate[6:8],gitVer[0:6],version,burnDate))
+try:
+  gitVer=subprocess.check_output("sudo git --git-dir=/home/dss/grove-base/.git log -1 --format=\"%at\"  | xargs -I{} date -d @{} +%d%m%y",shell=True) 
+  gitVer=gitVer.decode()    
+  print(gitVer)
+  grovelcd.setText("MRT%s %s\nIMG FW%s (%s)"%(imgDate[0:4]+imgDate[6:8],gitVer[0:6],version,burnDate))
+except Exception as e:
+  gitVer=""
 
 grovelcd.setRGB(128,128,128)
 cyclePos=1
