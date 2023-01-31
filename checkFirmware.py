@@ -66,27 +66,39 @@ def doUpdate():
        grovelcd.setText("Update failed\nPress button")
     grovelcd.setText("")
 
-#time.sleep(5)
-needsUpdate=False
-try:
-    # clear GPIO and reset grovepi
-    clearGPIO()
-    # important that this happens after we reset the grovepi board
-    # or else we lose connection
-    currentVersion= grovepi.version()
-    if currentVersion!="1.4.0":
-        needsUpdate=True
-    else:
-        print(f"Current firmware:{currentVersion}")
-except:
-    needsUpdate=True
+def update_if_needed():
+    for _retries in range(10):
+        try:
+            # clear GPIO and reset grovepi
+            clearGPIO()
+            # important that this happens after we reset the grovepi board
+            # or else we lose connection
+            currentVersion= grovepi.version()
+            if currentVersion!="1.4.0":
+                if currentVersion != "-1,-1,-1":
+                    # got a different version number, update
+                    break
+                # if we get here, retry in case the version check just failed for some reason
+            else:
+                print(f"Current firmware:{currentVersion}")
+                return False
+        except Exception as e:
+            # retry on exception
+            print("Couldn't check version:",e)
+        time.sleep(1) # wait a second for firmware version
 
-if needsUpdate:
+    # if we get here, firmware is out of date, we need to update
     grovelcd.setRGB(128,128,128)
     grovelcd.setText("Old firmware")
 
-    
-    doUpdate()
-    clearGPIO()
+    try:
+        doUpdate()
+        clearGPIO()
+    except Exception as e:
+        estr="FW:"+str(e)
+        if len(estr)>32:
+            estr=estr[0:32]
+        grovelcd.setText(estr)
 
 
+update_if_needed()
