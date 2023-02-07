@@ -39,6 +39,8 @@ sudo apt-get install -y subversion
 sudo apt-get install -y git
 # make sure libatlas is installed so numpy works
 sudo apt-get install -y --no-upgrade libatlas-base-dev
+# install tensorflow lite 2.11.0
+sudo python3 -m pip install tflite-runtime=2.11.0
 
 # this will stop firstrun being called
 sudo cp /home/pi/grove-startup-scripts/rc.local /etc/rc.local
