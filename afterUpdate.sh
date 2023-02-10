@@ -11,8 +11,8 @@ pushd /home/dss
 sudo cp /home/pi/grove-startup-scripts/getlatest.sh .
 sudo chown dss.dss /home/dss/getlatest.sh
 sudo -u dss bash ./getlatest.sh
-sed -i '/grove-base/d' .bashrc
-sed -i "1i export PYTHONPATH=~/grove-base" .bashrc
+sudo sed -i '/grove-base/d' .bashrc
+sudo sed -i "1i export PYTHONPATH=~/grove-base" .bashrc
 
 sudo mkdir -p /home/dss/.ssh
 sudo cp /home/pi/grove-startup-scripts/authorized_keys /home/dss/.ssh/
