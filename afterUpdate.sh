@@ -2,11 +2,6 @@
 # put commands to run after git update here - don't modify checkUpdate.sh or
 # else you need an extra reboot
 
-sudo cp /etc/skel/.bashrc .bashrc
-sudo cp /etc/skel/.bashrc .profile
-sudo sed -i "1i export PYTHONPATH=~/grove-base" .profile
-sudo chown dss.dss .bashrc 
-sudo chown dss.dss .profile
 
 echo "Git changed - copying code across"
 sudo chown pi.pi -R /home/pi/grove-startup-scripts
@@ -15,9 +10,16 @@ then
     sudo cp /home/pi/grove-startup-scripts/rc.local /etc/rc.local
 fi
 pushd /home/dss
+sudo cp /etc/skel/.bashrc .bashrc
+sudo cp /etc/skel/.bashrc .profile
+sudo sed -i "1i export PYTHONPATH=~/grove-base" .profile
+sudo chown dss.dss .bashrc 
+sudo chown dss.dss .profile
+
 sudo cp /home/pi/grove-startup-scripts/getlatest.sh .
 sudo chown dss.dss /home/dss/getlatest.sh
 sudo -u dss bash ./getlatest.sh
+
 
 sudo mkdir -p /home/dss/.ssh
 sudo cp /home/pi/grove-startup-scripts/authorized_keys /home/dss/.ssh/
