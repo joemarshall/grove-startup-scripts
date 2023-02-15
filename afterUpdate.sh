@@ -13,6 +13,7 @@ pushd /home/dss
 sudo cp /etc/skel/.bashrc .bashrc
 sudo cp /etc/skel/.bashrc .profile
 sudo sed -i "1i export PYTHONPATH=~/grove-base" .profile
+sudo sed -i "1i export PYTHONPATH=~/grove-base" .bashrc
 sudo chown dss.dss .bashrc 
 sudo chown dss.dss .profile
 

@@ -9,8 +9,7 @@ sudo useradd dss -m -G i2c,audio,video,gpio,spi
 sudo chpasswd <<< "dss:dss"
 sudo mkdir /home/dss
 sudo adduser dss i2c
-echo "export PYTHONPATH=~/grove-base" | sudo tee -a /home/dss/.bashrc
-
+sudo sed -i "1i export PYTHONPATH=~/grove-base" .profile
 
 
 sudo /sbin/iw wlan0 set power_save off
