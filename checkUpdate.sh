@@ -43,4 +43,4 @@ fi
 
 sudo chown pi.pi -R /home/pi/grove-startup-scripts
 #sudo systemctl disable serial-getty@ttyAMA0.service
-sudo /usr/bin/python /home/pi/grove-startup-scripts/checkFirmware.py
+#sudo /usr/bin/python /home/pi/grove-startup-scripts/checkFirmware.py
