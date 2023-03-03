@@ -14,6 +14,8 @@ do
 done
 # pull changes from git in dss user if needed
 pushd /home/dss
+sudo cp /home/pi/grove-startup-scripts/getlatest.sh .
+sudo chown dss.dss /home/dss/getlatest.sh
 sudo -u dss bash ./getlatest.sh
 popd
 
