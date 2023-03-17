@@ -15,6 +15,7 @@ done
 while true
 do
     sudo apt-get update -y
+    sudo apt-get install -y git
     sudo apt-get install -y /home/pi/grove-startup-scripts/avrdude_6.2-2_armhf.deb
     sudo apt-get install -y screen
     sudo apt-get install -y libncurses5
@@ -24,7 +25,6 @@ do
     sudo apt-get install -y --no-upgrade libatlas-base-dev
     # install tensorflow lite 2.11.0
     sudo python3 -m pip install tflite-runtime=2.11.0
-    sudo apt-get install -y git
 
     # if git is broken, remove apt-get lists and update again, otherwise we're done
     git --version && break 
