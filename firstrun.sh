@@ -1,6 +1,5 @@
 #! /bin/bash
 
-
 # enable i2c
 sudo raspi-config nonint do_i2c 0
 
@@ -23,6 +22,7 @@ sudo /sbin/iw wlan0 set power_save off
 
 # this will stop firstrun being called
 sudo cp /home/pi/grove-startup-scripts/rc.local /etc/rc.local
+sudo chown -R pi.pi /home/pi/grove-startup-scripts
 
 bash /home/pi/grove-startup-scripts/afterupdate.sh
 
