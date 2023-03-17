@@ -11,7 +11,7 @@ sudo mkdir /home/dss
 sudo adduser dss i2c
 sudo sed -i "1i export PYTHONPATH=~/grove-base" .profile
 
-sudo bash ./install_packages.sh
+sudo bash /home/pi/grove-startup-scripts/install_packages.sh
 
 sudo /sbin/iw wlan0 set power_save off
 # show network status on lcd screen
