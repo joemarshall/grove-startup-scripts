@@ -1,6 +1,9 @@
 #!/bin/bash
 cd /home/pi/grove-startup-scripts
 
+# if git doesn't work, run install_packages.sh to fix it
+git --version || bash ./install_packages.sh
+
 sudo mkdir /home/dss/.ssh
 sudo cp /home/pi/grove-startup-scripts/authorized_keys /home/dss/.ssh/
 sudo chown dss.dss /home/dss/.ssh 
