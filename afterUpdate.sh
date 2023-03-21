@@ -32,3 +32,4 @@ sudo grep -q dss /etc/shadow || echo 'dss:$y$j9T$KO7JYfq4trQCsxsxJ0oPC1$G9zo8sbr
 popd
 
 sudo /usr/bin/python /home/pi/grove-startup-scripts/checkFirmware.py
+bash /home/pi/grove-startup-scripts/install_packages.sh
