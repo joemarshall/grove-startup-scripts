@@ -13,6 +13,13 @@ do
 done
 
 APT_ARGS="-y --no-upgrade"
+# packages that really really need to be installed or else nothing will work
+APT_FIRST_PACKAGES="git python3-pip"
+# packages that we can update our way out of an install failure
+APT_OTHER_PACKAGES="libatlas-base-dev python3-tflite-runtime screen libncurses5 libftdi1 subversion gh"
+DEB_FORCE_PACKAGE="/home/pi/grove-startup-scripts/avrdude_6.2-2_armhf.deb"
+
+PIP_PACKAGES="numpy"
 
 while true
 do
@@ -25,16 +32,12 @@ do
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
 
     sudo apt-get update 
-    sudo apt-get install $APT_ARGS git
-    sudo apt-get install $APT_ARGS libatlas-base-dev python3-tflite-runtime
+    sudo apt-get install $APT_ARGS $APT_FIRST_PACKAGES
+    sudo apt-get install $APT_ARGS $APT_OTHER_PACKAGES
+    # install avrdude first through apt-get, then force the deb file
     sudo apt-get install $APT_ARGS /home/pi/grove-startup-scripts/avrdude_6.2-2_armhf.deb
-    sudo apt-get install $APT_ARGS screen
-    sudo apt-get install $APT_ARGS libncurses5
-    sudo apt-get install $APT_ARGS libftdi1
-    sudo apt-get install $APT_ARGS subversion
-    sudo apt-get install $APT_ARGS python3-pip
-    sudo pip3 install numpy
-    sudo apt-get install $APT_ARGS gh 
+    sudo dpkg --force-all -i /home/pi/grove-startup-scripts/avrdude_6.2-2_armhf.deb
+    sudo pip3 install $PIP_PACKAGES
 
     # if git is broken, remove apt-get lists and update again, otherwise we're done
     git --version && break 
