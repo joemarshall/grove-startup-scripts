@@ -2,7 +2,7 @@
 
 # enable i2c
 sudo raspi-config nonint do_i2c 0
-
+python firstboot_animation.py &
 # add dss user
 
 if id "dss"; then
