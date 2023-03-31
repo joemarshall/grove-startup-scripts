@@ -1,8 +1,14 @@
 import grovelcd
 import time
 import socket
-grovelcd.setRGB(255,0,0)
-grovelcd.setText("First boot")
+
+try:
+    grovelcd.setRGB(255,0,0)
+    grovelcd.setText("First boot")
+except OSError:
+    print(".")
+    time.sleep(0.5)
+
 x=0
 
 def get_ip():
