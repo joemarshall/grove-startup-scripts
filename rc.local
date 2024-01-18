@@ -16,8 +16,27 @@ _IP=$(hostname -I) || true
 if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
+# if there is an init task on the boot partition then run it
+# and delete it
+if [ -f /boot/firmware/init_task.sh ]; then
+  cd /boot/firmware
+  /usr/bin/bash /boot/firmware/init_task.sh
+  /usr/bin/mount -o remount,rw,fmask=0777,dmask=0777 /boot/firmware
+  rm /boot/firmware/init_task.sh
+  /usr/bin/mount -o remount,ro /boot/firmware
+fi
+if [ -f /boot/init_task.sh ]; then
+  cd /boot
+  /usr/bin/bash /boot/init_task.sh
+  /usr/bin/mount -o remount,rw,fmask=0777,dmask=0777 /boot
+  rm /boot/init_task.sh
+  /usr/bin/mount -o remount,ro /boot
+fi
+
 cd /home/pi
 /usr/bin/sudo -u pi /usr/bin/python3 /home/pi/grove-startup-scripts/showIP.py &
 /usr/bin/sudo -u pi /bin/bash /home/pi/grove-startup-scripts/checkUpdate.sh &
+# enable i2c
+sudo raspi-config nonint do_i2c 0 
 /sbin/iw wlan0 set power_save off
 exit 0

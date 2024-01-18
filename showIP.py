@@ -21,7 +21,7 @@ if only_address == False:
         version = "???"
     try:
         burnDate = time.strftime("%d%m", time.gmtime(
-            os.path.getmtime('/boot/burning-date.txt')))
+            os.path.getmtime('/boot/firmware/burning-date.txt')))
     except:
         burnDate = "0000"
     imgDate = ""
