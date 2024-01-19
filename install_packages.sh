@@ -37,7 +37,7 @@ do
     # install avrdude first through apt-get, then force the deb file
     sudo apt-get install $APT_ARGS /home/pi/grove-startup-scripts/avrdude_6.2-2_armhf.deb
     sudo dpkg --force-all -i /home/pi/grove-startup-scripts/avrdude_6.2-2_armhf.deb
-    sudo pip3 install $PIP_PACKAGES
+    sudo pip3 install $PIP_PACKAGES --break-system-packages
 
     # if git is broken, remove apt-get lists and update again, otherwise we're done
     git --version && break 
