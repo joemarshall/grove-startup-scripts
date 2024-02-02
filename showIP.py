@@ -26,7 +26,7 @@ if only_address == False:
         burnDate = "0000"
     imgDate = ""
     try:
-        with open('/boot/image-date.txt') as im:
+        with open('/boot/firmware/image-date.txt') as im:
             imgDate = im.read()
     except IOError:
         imgDate = ""
