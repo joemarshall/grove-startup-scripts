@@ -29,42 +29,49 @@ def clearGPIO():
     for c in range(8,12):
         unexportGPIO(c)
 
-
+def setLCDText(txt):
+    clearGPIO()
+    import smbus2 as smbus
+    grovelcd.bus.close()
+    grovelcd.bus=None
+    time.sleep(0.1)
+    grovelcd.bus=smbus.SMBus(1)
+    grovelcd.setText(txt)
 
 def doUpdate():
     clearGPIO()
     retVal=call(["/usr/bin/avrdude","-c","linuxgpio","-p","m328p"])
     if retVal!=0:
     # needs jumper between ISP and reset
-        grovelcd.setText("Jumper wire fromD4 to ISP reset")
+        setLCDText("Jumper wire fromD4 to ISP reset")
         while grovepi.digitalRead(2)==0:
             time.sleep(0.01)
         while grovepi.digitalRead(2)==1:
             time.sleep(0.01)
     firmwarePath=os.path.join(os.path.dirname(os.path.realpath(__file__)),"grove_pi_firmware.hex")
     print (firmwarePath)
-    grovelcd.setText("Try update firmware\n---------------")
+    setLCDText("Try update firmware\n---------------")
     retVal=call(["/usr/bin/avrdude","-c","linuxgpio","-p","m328p","-U","lfuse:w:0xFF:m"])
     if retVal==0:
-        grovelcd.setText("Try update\n**----------")
+        setLCDText("Try update\n**----------")
         retVal=call(["/usr/bin/avrdude","-c","linuxgpio","-p","m328p","-U","hfuse:w:0xDA:m"])
     if retVal==0:
-        grovelcd.setText("Try update\n****--------")
+        setLCDText("Try update\n****--------")
         retVal=call(["/usr/bin/avrdude","-c","linuxgpio","-p","m328p","-U","efuse:w:0xFD:m"])
     if retVal==0:
-        grovelcd.setText("Try update\n******------")
+        setLCDText("Try update\n******------")
         retVal=call(["/usr/bin/avrdude","-c","linuxgpio","-p","m328p","-U","flash:w:%s"%(firmwarePath)])
     if retVal==0:
         time.sleep(0.1)
         clearGPIO()
         time.sleep(0.3)
         newVer=grovepi.version()
-        grovelcd.setText("Update ok\n"+newVer)
+        setLCDText("Update ok\n"+newVer)
         time.sleep(30)
         import showIP
     else:
-       grovelcd.setText("Update failed\nPress button")
-    grovelcd.setText("")
+       setLCDText("Update failed\nPress button")
+    setLCDText("")
 
 def update_if_needed():
     for _retries in range(10):
@@ -89,16 +96,17 @@ def update_if_needed():
 
     # if we get here, firmware is out of date, we need to update
     grovelcd.setRGB(128,128,128)
-    grovelcd.setText("Old firmware")
+    setLCDText("Old firmware")
 
     try:
         doUpdate()
         clearGPIO()
     except Exception as e:
+        print(e)
         estr="FW:"+str(e)
         if len(estr)>32:
             estr=estr[0:32]
-        grovelcd.setText(estr)
+        setLCDText(estr)
 
 
 update_if_needed()

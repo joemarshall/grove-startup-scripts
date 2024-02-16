@@ -2,6 +2,16 @@
 # put commands to run after git update here - don't modify checkUpdate.sh or
 # else you need an extra reboot
 
+# remove old armhf version of avrdude and patch it ourselves
+sudo dpkg -s avrdude:armhf
+if [ $? -eq 0 ]; then 
+    sudo apt-get remove -y avrdude:armhf 
+    sudo apt-get -y install avrdude
+    # add gpio conf for grovepi to avrdude
+    sudo cp avrdude.conf /etc/avrdude.conf
+    sudo chown root.root /etc/avrdude.conf
+fi
+
 
 echo "Git changed - copying code across"
 sudo chown pi.pi -R /home/pi/grove-startup-scripts

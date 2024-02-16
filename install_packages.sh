@@ -34,9 +34,9 @@ do
     sudo apt-get update 
     sudo apt-get install $APT_ARGS $APT_FIRST_PACKAGES
     sudo apt-get install $APT_ARGS $APT_OTHER_PACKAGES
-    # install avrdude first through apt-get, then force the deb file
-    sudo apt-get install $APT_ARGS /home/pi/grove-startup-scripts/avrdude_6.2-2_armhf.deb
-    sudo dpkg --force-all -i /home/pi/grove-startup-scripts/avrdude_6.2-2_armhf.deb
+    sudo apt-get install avrdude
+    # add gpio conf for grovepi to avrdude
+    sudo cp avrdude.conf /etc/avrdude.conf
     sudo pip3 install $PIP_PACKAGES --break-system-packages
 
     # if git is broken, remove apt-get lists and update again, otherwise we're done
