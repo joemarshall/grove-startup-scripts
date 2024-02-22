@@ -6,12 +6,15 @@
 sudo dpkg -s avrdude:armhf
 if [ $? -eq 0 ]; then 
     sudo apt-get remove -y avrdude:armhf 
+fi
+
+sudo dpkg -s avrdude
+if [ $? -ne 0 ]; then 
     sudo apt-get -y install avrdude
     # add gpio conf for grovepi to avrdude
     sudo cp avrdude.conf /etc/avrdude.conf
     sudo chown root:root /etc/avrdude.conf
 fi
-
 
 echo "Git changed - copying code across"
 sudo chown pi.pi -R /home/pi/grove-startup-scripts
