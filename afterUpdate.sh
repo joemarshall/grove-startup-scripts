@@ -9,7 +9,7 @@ if [ $? -eq 0 ]; then
     sudo apt-get -y install avrdude
     # add gpio conf for grovepi to avrdude
     sudo cp avrdude.conf /etc/avrdude.conf
-    sudo chown root.root /etc/avrdude.conf
+    sudo chown root:root /etc/avrdude.conf
 fi
 
 
