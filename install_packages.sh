@@ -17,7 +17,6 @@ APT_ARGS="-y --no-upgrade"
 APT_FIRST_PACKAGES="git python3-pip"
 # packages that we can update our way out of an install failure
 APT_OTHER_PACKAGES="libatlas-base-dev python3-tflite-runtime screen libncurses5 libftdi1 subversion gh"
-DEB_FORCE_PACKAGE="/home/pi/grove-startup-scripts/avrdude_6.2-2_armhf.deb"
 
 PIP_PACKAGES="numpy"
 
@@ -37,6 +36,7 @@ do
     sudo apt-get install avrdude
     # add gpio conf for grovepi to avrdude
     sudo cp avrdude.conf /etc/avrdude.conf
+    sudo chown root:root /etc/avrdude.conf
     sudo pip3 install $PIP_PACKAGES --break-system-packages
 
     # if git is broken, remove apt-get lists and update again, otherwise we're done
