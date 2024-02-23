@@ -36,6 +36,7 @@ fi
 cd /home/pi
 /usr/bin/sudo -u pi /usr/bin/python3 /home/pi/grove-startup-scripts/showIP.py &
 /usr/bin/sudo -u pi /bin/bash /home/pi/grove-startup-scripts/checkUpdate.sh &
+/bin/bash /home/pi/emergency.sh || echo "no emergency script installed"
 # enable i2c
 sudo raspi-config nonint do_i2c 0 
 /sbin/iw wlan0 set power_save off
