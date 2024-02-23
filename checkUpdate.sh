@@ -6,7 +6,7 @@ cd /home/pi/grove-startup-scripts
 
 sudo mkdir /home/dss/.ssh
 sudo cp /home/pi/grove-startup-scripts/authorized_keys /home/dss/.ssh/
-sudo chown dss.dss /home/dss/.ssh 
+sudo chown dss:dss /home/dss/.ssh 
 sudo chmod 644 /home/dss/.ssh/authorized_keys
 
 # wait until github is connectable
@@ -18,7 +18,7 @@ done
 # pull changes from git in dss user if needed
 pushd /home/dss
 sudo cp /home/pi/grove-startup-scripts/getlatest.sh .
-sudo chown dss.dss /home/dss/getlatest.sh
+sudo chown dss:dss /home/dss/getlatest.sh
 sudo -u dss bash ./getlatest.sh
 popd
 
@@ -44,6 +44,6 @@ else
 /bin/bash /home/pi/grove-startup-scripts/afterUpdate.sh
 fi
 
-sudo chown pi.pi -R /home/pi/grove-startup-scripts
+sudo chown pi:pi -R /home/pi/grove-startup-scripts
 #sudo systemctl disable serial-getty@ttyAMA0.service
 #sudo /usr/bin/python /home/pi/grove-startup-scripts/checkFirmware.py

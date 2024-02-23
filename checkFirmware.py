@@ -108,8 +108,8 @@ def update_if_needed():
         print(e)
         estr="FW:"+str(e)
         if len(estr)>32:
-            estr=estr[0:32]
-        setLCDText(estr)
+            estr=estr[0:32]            
+#        setLCDText(estr)
 
 
 update_if_needed()
