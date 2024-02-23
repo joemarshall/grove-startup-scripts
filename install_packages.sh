@@ -33,7 +33,7 @@ do
     sudo apt-get update 
     sudo apt-get install $APT_ARGS $APT_FIRST_PACKAGES
     sudo apt-get install $APT_ARGS $APT_OTHER_PACKAGES
-    sudo apt-get install avrdude
+    sudo apt-get install -y avrdude
     # add gpio conf for grovepi to avrdude
     sudo cp avrdude.conf /etc/avrdude.conf
     sudo chown root:root /etc/avrdude.conf
