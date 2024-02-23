@@ -30,13 +30,16 @@ def clearGPIO():
         unexportGPIO(c)
 
 def setLCDText(txt):
-    clearGPIO()
-    import smbus2 as smbus
-    grovelcd.bus.close()
-    grovelcd.bus=None
-    time.sleep(0.1)
-    grovelcd.bus=smbus.SMBus(1)
-    grovelcd.setText(txt)
+    try:
+        clearGPIO()
+        import smbus2 as smbus
+        grovelcd.bus.close()
+        grovelcd.bus=None
+        time.sleep(0.1)
+        grovelcd.bus=smbus.SMBus(1)
+        grovelcd.setText(txt)
+    except IOError:
+        print("Couldn't write to LCD:",txt)
 
 def doUpdate():
     clearGPIO()
