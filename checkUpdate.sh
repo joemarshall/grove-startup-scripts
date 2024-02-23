@@ -36,6 +36,7 @@ else
         if [ $? -eq 0 ]
         then
           cd ~
+          sudo chown pi:pi -R /home/pi/grove-startup-scripts
           rm -rf grove-startup-scripts
           mv /tmp/grove-startup-scripts ./grove-startup-scripts
         fi
