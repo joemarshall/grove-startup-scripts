@@ -1,6 +1,7 @@
 import grovelcd
 import time
 import socket
+import subprocess
 
 try:
     grovelcd.setRGB(255,0,0)
@@ -21,17 +22,31 @@ def get_ip():
     except Exception:
         IP = ''
     finally:
-        s.close()
+        s.close()    
     return IP
 
+def has_wifi():
+    try:
+        subprocess.check_call("netstat -i |grep -c wlan0",shell=True)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+        
+
+
 curtext=""
+wifi_here=has_wifi()
+
 while True:
     try:
         ip=get_ip()
         x=x+1
         x=x%255
         grovelcd.setRGB(255-x,x,0)
-        text=f"First boot\n{ip}"
+        if wifi_here:
+            text=f"First boot\n{ip}"
+        else:
+            text=f"First (no wifi)\n{ip}"
         if curtext!=text:
             curtext=text
             grovelcd.setText(curtext)

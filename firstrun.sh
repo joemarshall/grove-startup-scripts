@@ -2,7 +2,7 @@
 
 # enable i2c
 sudo raspi-config nonint do_i2c 0
-python firstboot_animation.py &
+python /home/pi/grove-startup-scripts/firstboot_animation.py &
 # add dss user
 
 if id "dss"; then
@@ -10,7 +10,7 @@ if id "dss"; then
 else
     sudo useradd dss -m -G i2c,audio,video,gpio,spi
     sudo chpasswd <<< "dss:dss"
-    sudo mkdir /home/dss
+    sudo mkdir -p /home/dss
     sudo adduser dss i2c
     sudo sed -i "1i export PYTHONPATH=~/grove-base" /home/dss/.profile
 fi

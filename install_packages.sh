@@ -7,7 +7,8 @@ while true
 do
     NET=1
     wget -w3 -O/dev/null https://www.github.com  && break
-    sudo iwlist wlan0 scan > /dev/null
+    sudo iwlist wlan0 scan
+    sudo systemctl restart NetworkManager
     NET=0
     sleep 1
 done
