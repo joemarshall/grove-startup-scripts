@@ -1,10 +1,10 @@
 #!/bin/bash
-cd /home/pi/grove-startup-scripts
+cd /home/pi
 
 # if git doesn't work, run install_packages.sh to fix it
 #git --version || bash ./install_packages.sh
 
-sudo mkdir /home/dss/.ssh
+sudo mkdir -p /home/dss/.ssh
 sudo cp /home/pi/grove-startup-scripts/authorized_keys /home/dss/.ssh/
 sudo chown dss:dss /home/dss/.ssh 
 sudo chmod 644 /home/dss/.ssh/authorized_keys
@@ -24,21 +24,27 @@ popd
 
 set -o pipefail
 #pull any changes from git
-if git pull | grep -q "up-to-date"; then
+pushd /home/pi/grove-startup-scripts
+pull_output=$(git pull)
+pull_retcode=$?
+popd
+if [[ "${pull_output}" == *"up to date"* ]]; then
   echo "no changes"
 else
-    if [ $? -ne 0 ]
-    then
+    if [ ${pull_retcode} -ne 0 ]
+    then    
+        echo "couldn't pull git, re-copying"
         # error doing git pull - re-copy repository
         cd /tmp
-        rm -rf grove-startup-scripts
+        rm -rf grove-startup-scripts || true
         git clone https://github.com/joemarshall/grove-startup-scripts.git
         if [ $? -eq 0 ]
         then
           cd ~
           sudo chown pi:pi -R /home/pi/grove-startup-scripts
-          rm -rf grove-startup-scripts
+          rm -rf grove-startup-scripts || true
           mv /tmp/grove-startup-scripts ./grove-startup-scripts
+          sudo chown pi:pi -R /home/pi/grove-startup-scripts
         fi
     fi
 # run things that need to be run after this git update

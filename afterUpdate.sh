@@ -10,6 +10,7 @@ fi
 
 sudo dpkg -s avrdude
 if [ $? -ne 0 ]; then 
+    echo "Installing avrdude"
     sudo apt-get -y install avrdude
     # add gpio conf for grovepi to avrdude
     sudo cp avrdude.conf /etc/avrdude.conf
@@ -17,7 +18,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Git changed - copying code across"
-sudo chown pi.pi -R /home/pi/grove-startup-scripts
+sudo chown pi:pi -R /home/pi/grove-startup-scripts
 if [ -s "/home/pi/g54mrt-useful-code/startup-scripts/checkUpdate.sh" ] 
 then
     sudo cp /home/pi/grove-startup-scripts/rc.local /etc/rc.local
@@ -27,11 +28,11 @@ sudo cp /etc/skel/.bashrc .bashrc
 sudo cp /etc/skel/.bashrc .profile
 sudo sed -i "1i export PYTHONPATH=~/grove-base" .profile
 sudo sed -i "1i export PYTHONPATH=~/grove-base" .bashrc
-sudo chown dss.dss .bashrc 
-sudo chown dss.dss .profile
+sudo chown dss:dss .bashrc 
+sudo chown dss:dss .profile
 
 sudo cp /home/pi/grove-startup-scripts/getlatest.sh .
-sudo chown dss.dss /home/dss/getlatest.sh
+sudo chown dss:dss /home/dss/getlatest.sh
 sudo -u dss bash ./getlatest.sh
 
 
