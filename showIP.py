@@ -36,10 +36,13 @@ if only_address == False:
             "sudo git --git-dir=/home/dss/grove-base/.git log -1 --format=\"%at\"  | xargs -I{} date -d @{} +%d%m%y", shell=True)
         gitVer = gitVer.decode()
         print(gitVer)
+    except subprocess.SubprocessError as e:
+        gitVer = ""
+    try:
         grovelcd.setText("MRT%s %s\nIMG FW%s (%s)" % (
             imgDate[0:4]+imgDate[6:8], gitVer[0:6], version, burnDate))
     except Exception as e:
-        gitVer = ""
+        pass
 
 cyclePos = 1
 
