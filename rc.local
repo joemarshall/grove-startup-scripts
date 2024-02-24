@@ -39,5 +39,5 @@ cd /home/pi
 /bin/bash /home/pi/emergency.sh || echo "no emergency script installed"
 # enable i2c
 sudo raspi-config nonint do_i2c 0 
-/sbin/iw wlan0 set power_save off
+/sbin/iw dev wlan0 set power_save off
 exit 0
