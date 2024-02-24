@@ -23,7 +23,7 @@ sudo bash /home/pi/grove-startup-scripts/install_packages.sh
 sudo cp /home/pi/grove-startup-scripts/rc.local /etc/rc.local
 sudo chown -R pi.pi /home/pi/grove-startup-scripts
 
-bash /home/pi/grove-startup-scripts/afterupdate.sh
+bash /home/pi/grove-startup-scripts/afterUpdate.sh
 sudo /sbin/iw dev wlan0 set power_save off || true
 
 # now reboot into full system
