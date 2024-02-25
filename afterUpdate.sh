@@ -25,7 +25,7 @@ then
 fi
 if [ ! -s "/home/pi/emergency.sh" ] 
 then
-    sudo cp cp /home/pi/grove-startup-scripts/emergency.sh /home/pi/emergency.sh
+    sudo cp /home/pi/grove-startup-scripts/emergency.sh /home/pi/emergency.sh
 fi
 
 
