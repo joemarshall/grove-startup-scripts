@@ -19,10 +19,16 @@ fi
 
 echo "Git changed - copying code across"
 sudo chown pi:pi -R /home/pi/grove-startup-scripts
-if [ -s "/home/pi/g54mrt-useful-code/startup-scripts/checkUpdate.sh" ] 
+if [ -s "/home/pi/grove-startup-scripts/rc.local" ] 
 then
     sudo cp /home/pi/grove-startup-scripts/rc.local /etc/rc.local
 fi
+if [ ! -s "/home/pi/emergency.sh" ] 
+then
+    sudo cp cp /home/pi/grove-startup-scripts/emergency.sh /home/pi/emergency.sh
+fi
+
+
 pushd /home/dss
 sudo cp /etc/skel/.bashrc .bashrc
 sudo cp /etc/skel/.bashrc .profile
