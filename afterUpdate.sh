@@ -13,7 +13,7 @@ if [ $? -ne 0 ]; then
     echo "Installing avrdude"
     sudo apt-get -y install avrdude
     # add gpio conf for grovepi to avrdude
-    sudo cp avrdude.conf /etc/avrdude.conf
+    sudo cp /home/pi/grove-startup-scripts/avrdude.conf /etc/avrdude.conf
     sudo chown root:root /etc/avrdude.conf
 fi
 
