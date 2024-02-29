@@ -44,8 +44,8 @@ sudo -u dss bash ./getlatest.sh
 
 sudo mkdir -p /home/dss/.ssh
 sudo cp /home/pi/grove-startup-scripts/authorized_keys /home/dss/.ssh/
-sudo chown dss.dss /home/dss/.ssh
-sudo chown dss.dss /home/dss/.ssh/authorized_keys
+sudo chown dss:dss /home/dss/.ssh
+sudo chown dss:dss /home/dss/.ssh/authorized_keys
 sudo chmod 644 /home/dss/.ssh/authorized_keys
 # fix dss password in case someone changed it
 sudo grep -q dss /etc/shadow || echo 'dss:$y$j9T$KO7JYfq4trQCsxsxJ0oPC1$G9zo8sbrS4PVoLNMhaROoor3YB1f56V1dBz8OnGWeaB:19034::::::'|sudo tee -a /etc/shadow

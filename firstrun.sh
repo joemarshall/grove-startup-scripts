@@ -21,7 +21,7 @@ sudo bash /home/pi/grove-startup-scripts/install_packages.sh
 
 # this will stop firstrun being called
 sudo cp /home/pi/grove-startup-scripts/rc.local /etc/rc.local
-sudo chown -R pi.pi /home/pi/grove-startup-scripts
+sudo chown -R pi:pi /home/pi/grove-startup-scripts
 
 bash /home/pi/grove-startup-scripts/afterUpdate.sh
 sudo /sbin/iw dev wlan0 set power_save off || true
