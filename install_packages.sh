@@ -1,15 +1,23 @@
 ##! /bin/bash
 
-NET=0
-
 # wait for network
 while true
 do
-    NET=1
     wget -w3 -O/dev/null https://www.github.com  && break
-    sudo iwlist wlan0 scan
+    sleep 1
+    wget -w3 -O/dev/null https://www.github.com  && break
+    sleep 1
+    wget -w3 -O/dev/null https://www.github.com  && break
+    sleep 1
+    wget -w3 -O/dev/null https://www.github.com  && break
+    sleep 5
+    wget -w3 -O/dev/null https://www.github.com  && break
+    sleep 5
+    wget -w3 -O/dev/null https://www.github.com  && break
+    sleep 5
+    wget -w3 -O/dev/null https://www.github.com  && break
+    sleep 60
     sudo systemctl restart NetworkManager
-    NET=0
     sleep 1
 done
 
