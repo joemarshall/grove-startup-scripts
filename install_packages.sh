@@ -25,8 +25,8 @@ APT_ARGS="-y --no-upgrade"
 # packages that really really need to be installed or else nothing will work
 APT_FIRST_PACKAGES="git python3-pip curl"
 # packages that we can update our way out of an install failure
-APT_OTHER_PACKAGES="libatlas-base-dev screen libncurses5 libftdi1"
-PIP_PACKAGES="tflite-runtime numpy"
+APT_OTHER_PACKAGES="libatlas-base-dev screen libncurses5 libftdi1 python3-scipy"
+PIP_PACKAGES="tflite-runtime"
 
 while true
 do

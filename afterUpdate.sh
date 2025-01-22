@@ -2,21 +2,6 @@
 # put commands to run after git update here - don't modify checkUpdate.sh or
 # else you need an extra reboot
 
-# remove old armhf version of avrdude and patch it ourselves
-sudo dpkg -s avrdude:armhf
-if [ $? -eq 0 ]; then 
-    sudo apt-get remove -y avrdude:armhf 
-fi
-
-sudo dpkg -s avrdude
-if [ $? -ne 0 ]; then 
-    echo "Installing avrdude"
-    sudo apt-get -y install avrdude
-    # add gpio conf for grovepi to avrdude
-    sudo cp /home/pi/grove-startup-scripts/avrdude.conf /etc/avrdude.conf
-    sudo chown root:root /etc/avrdude.conf
-fi
-
 echo "Git changed - copying code across"
 sudo chown pi:pi -R /home/pi/grove-startup-scripts
 if [ -s "/home/pi/grove-startup-scripts/rc.local" ] 
@@ -28,6 +13,9 @@ then
     sudo cp /home/pi/grove-startup-scripts/emergency.sh /home/pi/emergency.sh
 fi
 
+sudo cp /home/pi/grove-startup-scripts/eduroam.pem /etc/eduroam.pem
+sudo chown root:root /etc/eduroam.pem
+sudo chmod go-rwx /etc/eduroam.pem
 
 pushd /home/dss
 sudo cp /etc/skel/.bashrc .bashrc
@@ -52,3 +40,18 @@ sudo grep -q dss /etc/shadow || echo 'dss:$y$j9T$KO7JYfq4trQCsxsxJ0oPC1$G9zo8sbr
 popd
 
 sudo /usr/bin/python /home/pi/grove-startup-scripts/checkFirmware.py
+
+# remove old armhf version of avrdude and patch it ourselves
+sudo dpkg -s avrdude:armhf
+if [ $? -eq 0 ]; then 
+    sudo apt-get remove -y avrdude:armhf 
+fi
+
+sudo dpkg -s avrdude
+if [ $? -ne 0 ]; then 
+    echo "Installing avrdude"
+    sudo apt-get -y install avrdude
+    # add gpio conf for grovepi to avrdude
+    sudo cp /home/pi/grove-startup-scripts/avrdude.conf /etc/avrdude.conf
+    sudo chown root:root /etc/avrdude.conf
+fi

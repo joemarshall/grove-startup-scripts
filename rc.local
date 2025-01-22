@@ -16,6 +16,13 @@ _IP=$(hostname -I) || true
 if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
+
+# If the root partition is under 12GB, then resize to SD card size
+# because this must be a pre-setup image burn
+if [ "$(df --output=size / -B1 | sed 1d)" -lt "12000000000" ]; then
+  /usr/bin/env raspi-config --expand-rootfs
+fi
+
 # if there is an init task on the boot partition then run it
 # and delete it
 if [ -f /boot/firmware/init_task.sh ]; then
@@ -37,7 +44,10 @@ cd /home/pi
 /usr/bin/sudo -u pi /usr/bin/python3 /home/pi/grove-startup-scripts/showIP.py &
 /usr/bin/sudo -u pi /bin/bash /home/pi/grove-startup-scripts/checkUpdate.sh &
 /bin/bash /home/pi/emergency.sh || echo "no emergency script installed"
-# enable i2c
-sudo raspi-config nonint do_i2c 0 
 /sbin/iw dev wlan0 set power_save off || true
+/usr/bin/raspi-config nonint do_wifi_country GB
+# enable i2c
+/usr/bin/raspi-config nonint do_i2c 0 
+
+
 exit 0
