@@ -47,11 +47,8 @@ if [ $? -eq 0 ]; then
     sudo apt-get remove -y avrdude:armhf 
 fi
 
-sudo dpkg -s avrdude
-if [ $? -ne 0 ]; then 
-    echo "Installing avrdude"
-    sudo apt-get -y install avrdude
-    # add gpio conf for grovepi to avrdude
-    sudo cp /home/pi/grove-startup-scripts/avrdude.conf /etc/avrdude.conf
-    sudo chown root:root /etc/avrdude.conf
-fi
+echo "Installing avrdude"
+# add gpio conf for grovepi to avrdude
+sudo cp /home/pi/grove-startup-scripts/avrdude /usr/bin/avrdude
+sudo cp /home/pi/grove-startup-scripts/avrdude.conf /usr/local/etc/avrdude.conf
+sudo chown root:root /usr/local/etc/avrdude.conf
