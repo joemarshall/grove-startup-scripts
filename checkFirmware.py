@@ -7,10 +7,10 @@ import grovepi
 
 
 def unexportGPIO(num):
-    gpioFolder=f"/sys/class/gpio/gpio{num}"
+    gpioFolder=f"/sys/class/gpio/gpio{num+512}"
     if os.path.exists(gpioFolder):
         with open('/sys/class/gpio/unexport','w') as f:
-            f.write(f"{num}")
+            f.write(f"{num+512}")
 
 # clear up any weird state left by firmware flashing 
 # and/or make sure GPIOs are in a good state for flashing again
@@ -21,10 +21,10 @@ def clearGPIO():
     for c in range(8,12):
         unexportGPIO(c)
     with open('/sys/class/gpio/export','w') as f:
-        f.write("8")
-    with open('/sys/class/gpio/gpio8/direction','w') as f:
+        f.write("520")
+    with open('/sys/class/gpio/gpio520/direction','w') as f:
         f.write("out")
-    with open('/sys/class/gpio/gpio8/value','w') as f:
+    with open('/sys/class/gpio/gpio520/value','w') as f:
         f.write("1")
     for c in range(8,12):
         unexportGPIO(c)
