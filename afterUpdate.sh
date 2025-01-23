@@ -50,5 +50,6 @@ fi
 echo "Installing avrdude"
 # add gpio conf for grovepi to avrdude
 sudo cp /home/pi/grove-startup-scripts/avrdude /usr/bin/avrdude
+sudo chmod a+x /usr/bin/avrdude
 sudo cp /home/pi/grove-startup-scripts/avrdude.conf /usr/local/etc/avrdude.conf
 sudo chown root:root /usr/local/etc/avrdude.conf
