@@ -32,9 +32,9 @@ PIP_PACKAGES="ai-edge-litert"
 
 while true
 do
-    if [ -f setup_dss_mac_address.sh ]; then
-        bash setup_dss_mac_address.sh
-        rm setup_dss_mac_address.sh
+    if [ -f /boot/firmware/setup_dss_mac_address.sh ]; then
+        sudo bash /boot/firmware/setup_dss_mac_address.sh
+        sudo rm /boot/firmware/setup_dss_mac_address.sh
     fi
 
     # install github cli using webi
