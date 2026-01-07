@@ -77,7 +77,7 @@ while countLeft == None or countLeft > 0:
         wlanAddr = "No wireless"
         wlanMac = Path('/sys/class/net/wlan0/address').read_text()
         for line in result.split('\n'):
-            values = re.split('\s+', line)
+            values = re.split(r'\s+', line)
             if len(values) > 2:
                 if countLeft == None:
                     countLeft = 30
