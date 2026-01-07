@@ -7,6 +7,7 @@ import re
 import grovepi
 import os.path
 import sys
+from pathlib import Path
 
 only_address = False
 if len(sys.argv) > 1 and sys.argv[1] == '--init':
@@ -74,6 +75,7 @@ while countLeft == None or countLeft > 0:
         curPos = 0
         ethAddr = "No ethernet"
         wlanAddr = "No wireless"
+        wlanMac = Path('/sys/class/net/wlan0/address').read_text()
         for line in result.split('\n'):
             values = re.split('\s+', line)
             if len(values) > 2:
@@ -81,7 +83,6 @@ while countLeft == None or countLeft > 0:
                     countLeft = 30
                 if values[0] == 'default':
                     pass
-    #        grovelcd.setText("%s\ngateway"%values[2])
                 else:
                     if values[2].find("eth") != -1:
                         ethAddr = formatAddr(values[8], "e")
@@ -94,8 +95,15 @@ while countLeft == None or countLeft > 0:
         if newText != curText:
             curText = newText
             grovelcd.setText(newText)
-    except:
-        pass
+        if Path('../dss_pi_mac_addresses').exists():
+            macAddrFile = Path('../dss_pi_mac_addresses/',wlanMac.strip().replace(":","_")+".txt")
+            macAddrFile.write_text(wlanAddr)
+            subprocess.check_output(["git","add",macAddrFile.name],cwd="../dss_pi_mac_addresses")
+            subprocess.check_output(["git","commit","-m","Added mac for %s"%wlanMac],cwd="../dss_pi_mac_addresses")
+            subprocess.check_output(["git","push"])
+
+    except Exception as e:
+        print(e)
     time.sleep(2.0)
     if countLeft != None:
         countLeft -= 2

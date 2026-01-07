@@ -30,8 +30,14 @@ PIP_PACKAGES="tflite-runtime"
 
 while true
 do
+    if [ -f setup_dss_mac_address.sh ]; then
+        bash setup_dss_mac_address.sh
+        rm setup_dss_mac_address.sh
+    fi
+
     # install github cli using webi
-    curl -sS https://webi.sh/gh | sh
+    curl -sS https://webi.sh/gh | sh; \
+    source ~/.config/envman/PATH.env
     sudo apt-get update 
     sudo apt-get install $APT_ARGS $APT_FIRST_PACKAGES
     sudo apt-get install $APT_ARGS $APT_OTHER_PACKAGES
