@@ -1,3 +1,4 @@
+cd ~
 if [[ -d "~/grove-base" ]]
 then
     cd ~/grove-base
