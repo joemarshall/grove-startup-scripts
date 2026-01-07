@@ -46,6 +46,7 @@ do
     sudo apt-get install -y avrdude
     # add gpio conf for grovepi to avrdude
     sudo cp /home/pi/grove-startup-scripts/avrdude.conf /etc/avrdude.conf
+    sudo cp /home/pi/grove-startup-scripts/avrdude /usr/bin/avrdude
     sudo chown root:root /etc/avrdude.conf
     sudo pip3 install $PIP_PACKAGES --break-system-packages
 
