@@ -16,10 +16,9 @@ do
   sleep 1
 done
 # pull changes from git in dss user if needed
-pushd /home/dss
-sudo cp /home/pi/grove-startup-scripts/getlatest.sh .
+sudo cp /home/pi/grove-startup-scripts/getlatest.sh /home/dss
 sudo chown dss:dss /home/dss/getlatest.sh
-sudo -u dss bash ./getlatest.sh
+sudo -u dss bash /home/dss/getlatest.sh
 popd
 
 set -o pipefail
