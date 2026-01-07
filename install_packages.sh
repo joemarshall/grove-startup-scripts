@@ -1,5 +1,6 @@
 ##! /bin/bash
-
+cd ~
+sudo chown pi:pi -R .
 # wait for network
 while true
 do
