@@ -38,8 +38,10 @@ do
     source ~/.config/envman/PATH.env
 
     if [ -f /boot/firmware/setup_dss_mac_address.sh ]; then
-        sudo bash /boot/firmware/setup_dss_mac_address.sh
+        bash /boot/firmware/setup_dss_mac_address.sh
+        sudo remount o=rw /boot/firmware
         sudo rm /boot/firmware/setup_dss_mac_address.sh
+        sudo remount o=ro /boot/firmware
     fi
     
     sudo apt-get update 
