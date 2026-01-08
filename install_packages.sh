@@ -26,9 +26,11 @@ APT_ARGS="-y --no-upgrade"
 # packages that really really need to be installed or else nothing will work
 APT_FIRST_PACKAGES="git python3-pip curl"
 # packages that we can update our way out of an install failure
-APT_OTHER_PACKAGES="libatlas-base-dev screen libncurses5 libftdi1 python3-scipy"
+APT_OTHER_PACKAGES="libatlas-base-dev screen libncurses5 libftdi1 python3-scipy libserialport0"
+
+GLOBAL_PIP_PACKAGES="setuptools"
 # litert (successor to tflite) for running AI models
-PIP_PACKAGES="ai-edge-litert"
+VENV_PIP_PACKAGES="numpy scipy pandas ai-edge-litert" 
 
 while true
 do
@@ -52,7 +54,11 @@ do
     sudo cp /home/pi/grove-startup-scripts/avrdude.conf /etc/avrdude.conf
     sudo cp /home/pi/grove-startup-scripts/avrdude /usr/bin/avrdude
     sudo chown root:root /etc/avrdude.conf
-    sudo pip3 install $PIP_PACKAGES --break-system-packages
+    sudo pip3 install $GLOBAL_PIP_PACKAGES --break-system-packages
+
+    sudo -u dss python -m venv /home/dss/pyenv
+    sudo -u dss /home/dss/pyenv/bin/pip install $VENV_PIP_PACKAGES
+
 
     # if git is broken, remove apt-get lists and update again, otherwise we're done
     git --version && break 

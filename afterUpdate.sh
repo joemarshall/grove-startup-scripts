@@ -17,17 +17,19 @@ sudo cp /home/pi/grove-startup-scripts/eduroam.pem /etc/eduroam.pem
 sudo chown root:root /etc/eduroam.pem
 sudo chmod go-rwx /etc/eduroam.pem
 
-pushd /home/dss
-sudo cp /etc/skel/.bashrc .bashrc
-sudo cp /etc/skel/.bashrc .profile
-sudo sed -i "1i export PYTHONPATH=~/grove-base" .profile
-sudo sed -i "1i export PYTHONPATH=~/grove-base" .bashrc
+sudo cp /etc/skel/.bashrc /home/dss/.bashrc
+sudo cp /etc/skel/.bashrc /home/dss/.profile
+sudo sed -i "1i export PYTHONPATH=~/grove-base" /home/dss/.profile
+sudo sed -i "1i export PYTHONPATH=~/grove-base" /home/dss/.bashrc
+sudo bash -c "echo  \"source ~/pyenv/bin/activate\" >> /home/dss/.bashrc"
+sudo bash -c "echo  \"source ~/pyenv/bin/activate\" >> /home/dss/.profile"
 sudo chown dss:dss .bashrc 
 sudo chown dss:dss .profile
 
-sudo cp /home/pi/grove-startup-scripts/getlatest.sh .
+sudo cp /home/pi/grove-startup-scripts/getlatest.sh /home/dss/getlatest.sh
 sudo chown dss:dss /home/dss/getlatest.sh
-sudo -u dss bash ./getlatest.sh
+sudo -u dss bash -c "cd /home/dss && bash /home/dss/getlatest.sh"
+
 
 
 sudo mkdir -p /home/dss/.ssh
@@ -37,15 +39,9 @@ sudo chown dss:dss /home/dss/.ssh/authorized_keys
 sudo chmod 644 /home/dss/.ssh/authorized_keys
 # fix dss password in case someone changed it
 sudo grep -q dss /etc/shadow || echo 'dss:$y$j9T$KO7JYfq4trQCsxsxJ0oPC1$G9zo8sbrS4PVoLNMhaROoor3YB1f56V1dBz8OnGWeaB:19034::::::'|sudo tee -a /etc/shadow
-popd
 
 sudo /usr/bin/python /home/pi/grove-startup-scripts/checkFirmware.py
 
-# remove old armhf version of avrdude and patch it ourselves
-sudo dpkg -s avrdude:armhf
-if [ $? -eq 0 ]; then 
-    sudo apt-get remove -y avrdude:armhf 
-fi
 
 echo "Installing avrdude"
 # add gpio conf for grovepi to avrdude
