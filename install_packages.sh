@@ -39,9 +39,9 @@ do
 
     if [ -f /boot/firmware/setup_dss_mac_address.sh ]; then
         bash /boot/firmware/setup_dss_mac_address.sh
-        sudo remount o=rw /boot/firmware
+        sudo mount -o remount,rw /boot/firmware
         sudo rm /boot/firmware/setup_dss_mac_address.sh
-        sudo remount o=ro /boot/firmware
+        sudo mount -o remount,ro /boot/firmware
     fi
     
     sudo apt-get update 
