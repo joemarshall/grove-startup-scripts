@@ -98,9 +98,9 @@ while countLeft == None or countLeft > 0:
         if Path('../dss_pi_mac_addresses').exists():
             macAddrFile = Path('../dss_pi_mac_addresses/',wlanMac.strip().replace(":","_")+".txt")
             macAddrFile.write_text(wlanAddr)
-            subprocess.check_output(["git","add",macAddrFile.name],cwd="../dss_pi_mac_addresses")
-            subprocess.check_output(["git","commit","-m","Added mac for %s"%wlanMac],cwd="../dss_pi_mac_addresses")
-            subprocess.check_output(["git","push"])
+            subprocess.check_output(["git","add",macAddrFile.name],cwd="/home/pi/dss_pi_mac_addresses")
+            subprocess.check_output(["git","commit","-m","Added mac for %s"%wlanMac],cwd="/home/pi/dss_pi_mac_addresses")
+            subprocess.check_output(["git","push"],cwd="/home/pi/dss_pi_mac_addresses")
 
     except Exception as e:
         print(e)
