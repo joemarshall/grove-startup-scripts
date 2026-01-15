@@ -13,7 +13,7 @@ sudo chmod 644 /home/dss/.ssh/authorized_keys
 until (/usr/bin/wget -O/dev/null https://www.github.com)
 do
   echo "waiting for github"
-  sleep 1
+  sleep 5
 done
 # pull changes from git in dss user if needed
 sudo cp /home/pi/grove-startup-scripts/getlatest.sh /home/dss/getlatest.sh
