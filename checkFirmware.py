@@ -45,12 +45,13 @@ def doUpdate():
     clearGPIO()
     retVal=call(["/usr/bin/avrdude","-c","linuxgpio","-p","m328p"])
     if retVal!=0:
-    # needs jumper between ISP and reset
-        setLCDText("Jumper wire fromD4 to ISP reset")
-        while grovepi.digitalRead(2)==0:
-            time.sleep(0.01)
-        while grovepi.digitalRead(2)==1:
-            time.sleep(0.01)
+    # # needs jumper between ISP and reset
+    #     setLCDText("Jumper wire fromD4 to ISP reset")
+    #     while grovepi.digitalRead(2)==0:
+    #         time.sleep(0.01)
+    #     while grovepi.digitalRead(2)==1:
+    #         time.sleep(0.01)
+        return
     firmwarePath=os.path.join(os.path.dirname(os.path.realpath(__file__)),"grove_pi_firmware.hex")
     print (firmwarePath)
     setLCDText("Try update firmware\n---------------")
