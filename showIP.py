@@ -114,11 +114,20 @@ while countLeft == None or countLeft > 0:
                     cwd="/home/pi/dss_pi_mac_addresses",
                 )
                 subprocess.call(
-                    ["git", "commit", "-m", "Added mac for %s (eth:%s)" % (wlanMac,ethAddr)],
+                    [
+                        "git",
+                        "commit",
+                        "-m",
+                        "Added mac for %s (eth:%s)" % (wlanMac, ethAddr),
+                    ],
                     cwd="/home/pi/dss_pi_mac_addresses",
                 )
                 subprocess.check_output(
                     ["git", "push"], cwd="/home/pi/dss_pi_mac_addresses"
+                )
+                subprocess.call(
+                    ["git", "pull"],
+                    cwd="/home/pi/dss_pi_mac_addresses",
                 )
                 writtenMac = True
     except Exception as e:
