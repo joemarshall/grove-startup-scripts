@@ -39,12 +39,6 @@ do
     curl -sS https://webi.sh/gh | sh; \
     source ~/.config/envman/PATH.env
 
-    if [ -f /boot/firmware/setup_dss_mac_address.sh ]; then
-        bash /boot/firmware/setup_dss_mac_address.sh
-        sudo mount -o remount,rw /boot/firmware
-        sudo rm /boot/firmware/setup_dss_mac_address.sh
-        sudo mount -o remount,ro /boot/firmware
-    fi
     
     sudo apt-get update 
     sudo apt-get install $APT_ARGS $APT_FIRST_PACKAGES

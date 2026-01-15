@@ -13,6 +13,13 @@ then
     sudo cp /home/pi/grove-startup-scripts/emergency.sh /home/pi/emergency.sh
 fi
 
+if [ -f /boot/firmware/setup_dss_mac_address.sh ]; then
+    bash /boot/firmware/setup_dss_mac_address.sh
+    sudo mount -o remount,rw /boot/firmware
+    sudo rm /boot/firmware/setup_dss_mac_address.sh
+    sudo mount -o remount,ro /boot/firmware
+fi
+
 sudo cp /home/pi/grove-startup-scripts/eduroam.pem /etc/eduroam.pem
 sudo chown root:root /etc/eduroam.pem
 sudo chmod go-rwx /etc/eduroam.pem
