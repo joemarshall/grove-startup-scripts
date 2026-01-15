@@ -63,6 +63,8 @@ def formatAddr(addr, type):
     return retVal[0:16]
 
 
+writtenMac = False
+
 countLeft = 300
 while countLeft == None or countLeft > 0:
     try:
@@ -95,11 +97,12 @@ while countLeft == None or countLeft > 0:
         if newText != curText:
             curText = newText
             grovelcd.setText(newText)
-        if Path('../dss_pi_mac_addresses').exists():
-            macAddrFile = Path('../dss_pi_mac_addresses/',wlanMac.strip().replace(":","_")+".txt")
-            macAddrFile.write_text(wlanAddr)
-            subprocess.check_output(["git","add",macAddrFile.name],cwd="/home/pi/dss_pi_mac_addresses")
-            subprocess.check_output(["git","commit","-m","Added mac for %s"%wlanMac],cwd="/home/pi/dss_pi_mac_addresses")
+        if not writtenMac:
+            if Path('../dss_pi_mac_addresses').exists():
+                macAddrFile = Path('../dss_pi_mac_addresses/',wlanMac.strip().replace(":","_")+".txt")
+                macAddrFile.write_text(wlanAddr)
+                subprocess.check_output(["git","add",macAddrFile.name],cwd="/home/pi/dss_pi_mac_addresses")
+                subprocess.call(["git","commit","-m","Added mac for %s"%wlanMac],cwd="/home/pi/dss_pi_mac_addresses")
             subprocess.check_output(["git","push"],cwd="/home/pi/dss_pi_mac_addresses")
 
     except Exception as e:

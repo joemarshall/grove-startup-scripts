@@ -99,8 +99,8 @@ def update_if_needed():
         time.sleep(1) # wait a second for firmware version
 
     # if we get here, firmware is out of date, we need to update
-    grovelcd.setRGB(128,128,128)
-    setLCDText("Old firmware")
+    #grovelcd.setRGB(128,128,128)
+    #setLCDText("Old firmware")
 
     try:
         doUpdate()
