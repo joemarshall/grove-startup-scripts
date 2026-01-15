@@ -56,3 +56,6 @@ sudo cp /home/pi/grove-startup-scripts/avrdude /usr/bin/avrdude
 sudo chmod a+x /usr/bin/avrdude
 sudo cp /home/pi/grove-startup-scripts/avrdude.conf /usr/local/etc/avrdude.conf
 sudo chown root:root /usr/local/etc/avrdude.conf
+
+# disable cloud-init because it makes boot super slow
+sudo touch /etc/cloud/cloud-init.disabled
