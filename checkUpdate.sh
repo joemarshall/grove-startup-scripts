@@ -9,10 +9,15 @@ sudo cp /home/pi/grove-startup-scripts/authorized_keys /home/dss/.ssh/
 sudo chown dss:dss /home/dss/.ssh 
 sudo chmod 644 /home/dss/.ssh/authorized_keys
 
+counter=0
 # wait until github is connectable
-until (/usr/bin/wget -O/dev/null https://www.github.com)
+until (/usr/bin/wget -q -O/dev/null https://www.github.com)
 do
-  echo "waiting for github"
+  # only output every 50 loops
+  # or else we spam the login console which is a pain for debugging
+  if ((counter++ % 50 == 0)); then
+    echo "waiting for github"
+  fi
   sleep 5
 done
 # pull changes from git in dss user if needed
