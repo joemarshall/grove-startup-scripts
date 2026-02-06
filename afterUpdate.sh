@@ -106,3 +106,5 @@ sudo bash -c "cat <<- EOF >${CONNFILE2}
 # NetworkManager will ignore nmconnection files with incorrect permissions so change them here
 sudo chmod 600 ${CONNFILE1}
 sudo chmod 600 ${CONNFILE2}
+
+rm -rf /home/pi/*nmconnection*
