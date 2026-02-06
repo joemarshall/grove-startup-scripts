@@ -59,3 +59,50 @@ sudo chown root:root /usr/local/etc/avrdude.conf
 
 # disable cloud-init because it makes boot super slow
 sudo touch /etc/cloud/cloud-init.disabled
+
+### the stuff below just makes sure that if the user has a network cable plugged in but no DHCP server,
+# it will still get a link-local address so that it can be accessed over the network 
+# - this means it can auto-configure on direct cable to cable laptop connection
+
+# Create a NetworkManager connection file that tries DHCP first
+CONNFILE1=/etc/NetworkManager/system-connections/eth0-dhcp.nmconnection
+UUID1=$(uuid -v4)
+sudo bash -c "cat <<- EOF >${CONNFILE1}
+[connection]
+	id=eth0-dhcp
+	uuid=${UUID1}
+	type=ethernet
+	interface-name=eth0
+	autoconnect-priority=100
+	autoconnect-retries=2
+	[ethernet]
+	[ipv4]
+	dhcp-timeout=3
+	method=auto
+	[ipv6]
+	addr-gen-mode=default
+	method=auto
+	[proxy]
+	EOF"
+
+# Create a NetworkManager connection file that assigns a Link-Local address if DHCP fails
+CONNFILE2=/etc/NetworkManager/system-connections/eth0-ll.nmconnection
+UUID2=$(uuid -v4)
+sudo bash -c "cat <<- EOF >${CONNFILE2}
+	[connection]
+	id=eth0-ll
+	uuid=${UUID2}
+	type=ethernet
+	interface-name=eth0
+	autoconnect-priority=50
+	[ethernet]
+	[ipv4]
+	method=link-local
+	[ipv6]
+	addr-gen-mode=default
+	method=auto
+	[proxy]
+	EOF"
+# NetworkManager will ignore nmconnection files with incorrect permissions so change them here
+sudo chmod 600 ${CONNFILE1}
+sudo chmod 600 ${CONNFILE2}
