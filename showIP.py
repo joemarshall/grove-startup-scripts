@@ -7,6 +7,7 @@ import re
 import grovepi
 import os.path
 import sys
+import re
 from pathlib import Path
 
 only_address = False
@@ -77,24 +78,21 @@ while countLeft == None or countLeft > 0:
             grovelcd.setRGB(128, 128, 128)
         else:
             grovelcd.setRGB(128, 128, 128)
-        result = subprocess.check_output(["ip", "route"])
-        result = result.decode()
+        result = subprocess.check_output(["ip", "route"],text=True)
         curPos = 0
         ethAddr = "No ethernet"
         wlanAddr = "No wireless"
         wlanMac = Path("/sys/class/net/wlan0/address").read_text()
         for line in result.split("\n"):
-            values = re.split(r"\s+", line)
-            if len(values) > 2:
-                if countLeft == None:
-                    countLeft = 30
-                if values[0] == "default":
-                    pass
-                else:
-                    if values[2].find("eth") != -1:
-                        ethAddr = formatAddr(values[8], "e")
-                    if values[2].find("wlan") != -1:
-                        wlanAddr = formatAddr(values[8], "w")
+            addrMatch = re.match(r"^\d+\.\d+\.\d+\.\d+/\d+\s*dev\s(\S+).*\s(\d+\.\d+\.\d+\.\d+)\s",line)
+            if addrMatch is None:
+                continue
+            adapter = addrMatch.group(1)
+            address = addrMatch.group(2)
+            if adapter.find("eth") != -1:
+                ethAddr = "E:"+address
+            elif adapter.find("wlan") != -1:
+                wlanAddr = "W:"+address
         adapterList = subprocess.check_output(["ifconfig"])
         if adapterList.find(b"wlan0") == -1 and countLeft < 280:
             wlanAddr = "Plug USB WIFI in"
