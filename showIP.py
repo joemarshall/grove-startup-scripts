@@ -82,7 +82,10 @@ while countLeft == None or countLeft > 0:
         curPos = 0
         ethAddr = "No ethernet"
         wlanAddr = "No wireless"
-        wlanMac = Path("/sys/class/net/wlan0/address").read_text()
+        try:
+            wlanMac = Path("/sys/class/net/wlan0/address").read_text()
+        except IOError:
+            wlanMac = "00:00:00:00:00:00"
         for line in result.split("\n"):
             addrMatch = re.match(r"^\d+\.\d+\.\d+\.\d+/\d+\s*dev\s(\S+).*\s(\d+\.\d+\.\d+\.\d+)\s",line)
             if addrMatch is None:
