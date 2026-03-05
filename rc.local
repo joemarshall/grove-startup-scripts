@@ -48,7 +48,7 @@ cd /home/pi
 sleep 10
 if [ -f /home/dss/startup.sh ]; then
   cd /home/dss
-  sudo -u dss -c "source ~/.profile && /usr/bin/bash /home/dss/startup.sh > startup.output.txt" || mv /home/dss/startup.sh /home/dss/startup.sh.failed
+  sudo -u dss bash -c "cd ~ &&source ~/.profile && /usr/bin/bash /home/dss/startup.sh > /home/dss/startup.output.txt  || mv /home/dss/startup.sh /home/dss/startup.sh.failed"
 fi
 
 exit 0
