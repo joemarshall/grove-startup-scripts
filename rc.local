@@ -45,7 +45,7 @@ cd /home/pi
 # enable i2c
 /usr/bin/raspi-config nonint do_i2c 0 
 
-sleep 10
+sleep 20
 if [ -f /home/dss/startup.sh ]; then
   cd /home/dss
   sudo -u dss bash -c "cd ~ &&source ~/.profile && /usr/bin/bash /home/dss/startup.sh > /home/dss/startup.output.txt 2>&1"
