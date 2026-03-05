@@ -8,7 +8,7 @@ if [ -s "/home/pi/grove-startup-scripts/rc.local" ]
 then
     sudo cp /home/pi/grove-startup-scripts/rc.local /etc/rc.local
 fi
-if [ ! -s "/home/pi/emergency.sh" ] 
+if [ ! -s "/home/pi/emergency.sh" ] || ! cmp -s /home/pi/grove-startup-scripts/emergency.sh /home/pi/emergency.sh
 then
     sudo cp /home/pi/grove-startup-scripts/emergency.sh /home/pi/emergency.sh
 fi
@@ -113,17 +113,6 @@ else
 	sudo chmod 600 ${CONNFILE2}
 fi
 
-# restore backed up networkmanager files if something gets lost (i.e. sd card corrupts)
-for backup_file in /etc/NetworkManagerBackup/*.nmconnection; do
-	if [ -s "$backup_file" ]; then
-		filename=$(basename "$backup_file")
-		target_file="/etc/NetworkManager/system-connections/$filename"
-		if [ ! -s "$target_file" ] || [ $(stat -f%z "$target_file" 2>/dev/null || stat -c%s "$target_file") -lt 100 ]; then
-			sudo cp "$backup_file" "$target_file"
-			sudo chmod 600 "$target_file"
-		fi
-	fi
-done
 
 # backup networkmanager connections if they aren't already backup up.
 sudo mkdir -p /etc/NetworkManagerBackup
