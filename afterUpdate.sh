@@ -63,49 +63,79 @@ sudo touch /etc/cloud/cloud-init.disabled
 ### the stuff below just makes sure that if the user has a network cable plugged in but no DHCP server,
 # it will still get a link-local address so that it can be accessed over the network 
 # - this means it can auto-configure on direct cable to cable laptop connection
+if [ -s $DATA_DIR/eth0-dhcp.nmconnection ] && [ -s $DATA_DIR/eth0-ll.nmconnection ]; then
+  # config files already exist - do nothing
+  echo "Ethernet config files already exist - not creating them"
+else
 
-# Create a NetworkManager connection file that tries DHCP first
-CONNFILE1=/etc/NetworkManager/system-connections/eth0-dhcp.nmconnection
-UUID1=$(uuid -v4)
-sudo bash -c "cat <<- EOF >${CONNFILE1}
-[connection]
-	id=eth0-dhcp
-	uuid=${UUID1}
-	type=ethernet
-	interface-name=eth0
-	autoconnect-priority=100
-	autoconnect-retries=2
-	[ethernet]
-	[ipv4]
-	dhcp-timeout=3
-	method=auto
-	[ipv6]
-	addr-gen-mode=default
-	method=auto
-	[proxy]
-	EOF"
 
-# Create a NetworkManager connection file that assigns a Link-Local address if DHCP fails
-CONNFILE2=/etc/NetworkManager/system-connections/eth0-ll.nmconnection
-UUID2=$(uuid -v4)
-sudo bash -c "cat <<- EOF >${CONNFILE2}
+	# Create a NetworkManager connection file that tries DHCP first
+	CONNFILE1=/etc/NetworkManager/system-connections/eth0-dhcp.nmconnection
+	UUID1=$(uuid -v4)
+	sudo bash -c "cat <<- EOF >${CONNFILE1}
 	[connection]
-	id=eth0-ll
-	uuid=${UUID2}
-	type=ethernet
-	interface-name=eth0
-	autoconnect-priority=50
-	[ethernet]
-	[ipv4]
-	method=link-local
-	[ipv6]
-	addr-gen-mode=default
-	method=auto
-	[proxy]
-	EOF"
-# NetworkManager will ignore nmconnection files with incorrect permissions so change them here
-sudo chmod 600 ${CONNFILE1}
-sudo chmod 600 ${CONNFILE2}
+		id=eth0-dhcp
+		uuid=${UUID1}
+		type=ethernet
+		interface-name=eth0
+		autoconnect-priority=100
+		autoconnect-retries=2
+		[ethernet]
+		[ipv4]
+		dhcp-timeout=3
+		method=auto
+		[ipv6]
+		addr-gen-mode=default
+		method=auto
+		[proxy]
+		EOF"
+
+	# Create a NetworkManager connection file that assigns a Link-Local address if DHCP fails
+	CONNFILE2=/etc/NetworkManager/system-connections/eth0-ll.nmconnection
+	UUID2=$(uuid -v4)
+	sudo bash -c "cat <<- EOF >${CONNFILE2}
+		[connection]
+		id=eth0-ll
+		uuid=${UUID2}
+		type=ethernet
+		interface-name=eth0
+		autoconnect-priority=50
+		[ethernet]
+		[ipv4]
+		method=link-local
+		[ipv6]
+		addr-gen-mode=default
+		method=auto
+		[proxy]
+		EOF"
+	# NetworkManager will ignore nmconnection files with incorrect permissions so change them here
+	sudo chmod 600 ${CONNFILE1}
+	sudo chmod 600 ${CONNFILE2}
+fi
+
+# restore backed up networkmanager files if something gets lost (i.e. sd card corrupts)
+for backup_file in /etc/NetworkManagerBackup/*.nmconnection; do
+	if [ -s "$backup_file" ]; then
+		filename=$(basename "$backup_file")
+		target_file="/etc/NetworkManager/system-connections/$filename"
+		if [ ! -s "$target_file" ] || [ $(stat -f%z "$target_file" 2>/dev/null || stat -c%s "$target_file") -lt 100 ]; then
+			sudo cp "$backup_file" "$target_file"
+			sudo chmod 600 "$target_file"
+		fi
+	fi
+done
+
+# backup networkmanager connections if they aren't already backup up.
+sudo mkdir -p /etc/NetworkManagerBackup
+for conn_file in /etc/NetworkManager/system-connections/*.nmconnection; do
+	if [ -s "$conn_file" ] && [ $(stat -f%z "$conn_file" 2>/dev/null || stat -c%s "$conn_file") -gt 100 ]; then
+		filename=$(basename "$conn_file")
+		backup_file="/etc/NetworkManagerBackup/$filename"
+		if [ ! -f "$backup_file" ] || ! cmp -s "$conn_file" "$backup_file"; then
+			sudo cp "$conn_file" "$backup_file"
+		fi
+	fi
+done
 
 screen -v > /dev/null || sudo apt-get install screen -y
 
