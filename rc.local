@@ -34,10 +34,6 @@ if [ -f /boot/init_task.sh ]; then
   /usr/bin/mount -o remount,ro /boot
 fi
 
-if [ -f /home/dss/startup.sh ]; then
-  cd /home/dss
-  sudo -u dss -c "/usr/bin/bash /home/dss/startup.sh" || mv /home/dss/startup.sh /home/dss/startup.sh.failed
-fi
 
 cd /home/pi
 /usr/bin/sudo -u pi /usr/bin/python3 /home/pi/grove-startup-scripts/showIP.py &
@@ -49,5 +45,10 @@ cd /home/pi
 # enable i2c
 /usr/bin/raspi-config nonint do_i2c 0 
 
+sleep 10
+if [ -f /home/dss/startup.sh ]; then
+  cd /home/dss
+  sudo -u dss -c "/usr/bin/bash /home/dss/startup.sh" || mv /home/dss/startup.sh /home/dss/startup.sh.failed
+fi
 
 exit 0
