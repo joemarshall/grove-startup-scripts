@@ -107,4 +107,6 @@ sudo bash -c "cat <<- EOF >${CONNFILE2}
 sudo chmod 600 ${CONNFILE1}
 sudo chmod 600 ${CONNFILE2}
 
+screen -v > /dev/null || sudo apt-get install screen -y
+
 rm -rf /home/pi/*nmconnection*
